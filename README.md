@@ -19,10 +19,6 @@ The most remarkable finding: When you count every occurrence of this pattern acr
 - **2031**: 7 matches (only months with 31 days) = 7 days
 - **Total**: 365 days
 
-## Next Sighting
-
-**January 26, 2026** — The next Phantom Year date is approaching!
-
 ## About This Project
 
 This repository contains the source code for [phantomyear.com](https://phantomyear.com) (or your deployed URL), a single-page website that explains this calendar curiosity with clear visualizations and mathematical breakdowns.
