@@ -1,20 +1,13 @@
 # Phantom Year - TODO List
 
-## 1. Dynamic Next Sighting Feature
+## ~~1. Dynamic Next Sighting Feature~~ ✓ COMPLETE
 
-Write JavaScript code to automatically calculate and display the next Phantom Year date based on the current day.
-
-**Requirements:**
-- Calculate the next date where DD = YY
-- Handle edge cases (e.g., February dates, end of range in 2031)
-- Display in user-friendly format
-- Update in real-time without page reload
-- Show countdown or days remaining
-
-**Implementation Notes:**
-- Should work for dates from 2001-2031
-- After 2031, display message about pattern ending
-- Consider timezone handling
+Implemented interactive sighting browser with:
+- Browse all 365 Phantom dates with < > navigation buttons
+- Preview labels showing adjacent dates
+- Countdown display (days away/ago)
+- Dynamic labels (Next/Past/Future Sighting)
+- Handles full date range (Jan 1, 2001 - Dec 31, 2031)
 
 ---
 
