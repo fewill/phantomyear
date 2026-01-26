@@ -11,44 +11,43 @@ Implemented interactive sighting browser with:
 
 ---
 
-## 2. Phantom Year Calendar Visualization
+## ~~2. Phantom Year Calendar Visualization~~ ✓ COMPLETE
 
-Explore creating an interactive calendar that visualizes the entire Phantom Year pattern.
+Implemented calendar.html with:
+- Year-by-year grid showing all 365 Phantom dates (2001-2031)
+- Sequential day numbering (#1-365) for each date
+- Color-coded: past (grey), future (purple), today (gold)
+- Stats bar showing days elapsed vs remaining
+- Tooltips with full date details
+- Linked from main page sighting browser
+- Day number added to main page sighting browser
 
-### Questions to Resolve:
-
-**Organization:**
-- Single view showing all 365 Phantom dates across 31 years?
-- Year-by-year navigation (2001-2031)?
-- Month-by-month view highlighting matching dates?
-- Visual timeline/heatmap showing distribution?
-
-**Month Naming:**
-- Keep standard month names (January-December)?
-- Create conceptual "Phantom Months" for the 365-day hidden year?
-  - If so, how to organize 365 days into months?
-  - 12 months? (Would need non-standard month lengths)
-  - 13 months? (28 days each = 364, plus 1 extra day)
-  - Something else entirely?
-
-**Calendar Features to Consider:**
-- Highlight dates that have already occurred vs. future dates
-- Show which months contribute which dates to the Phantom Year
-- Interactive: click a date to see its position in the pattern
+### Potential Future Enhancements:
 - Visual representation of the 336-22-7 breakdown
 - Export/share functionality
+- Alternative views (timeline/heatmap)
+- Conceptual "Phantom Months" organization
 
-**Design Questions:**
-- How to make it intuitive and visually striking?
-- Should it emphasize the "scattered" nature or the "collected" year?
-- Mobile-friendly vs. desktop experience?
+---
+
+## ~~3. Interactive Features~~ ✓ COMPLETE
+
+Implemented visitor engagement features:
+- Social sharing buttons (X/Twitter, Facebook, Copy Link)
+- Download .ics file for any Phantom date
+- Keyboard navigation (arrow keys to browse)
+- "I was there" check-ins with localStorage persistence
+- Stats display showing witnessed dates count
 
 ---
 
 ## Future Ideas
 
-- Add social sharing for upcoming Phantom dates
-- Create downloadable calendar/reminder files (.ics)
+- ~~Add social sharing for upcoming Phantom dates~~ ✓
+- ~~Create downloadable calendar/reminder files (.ics)~~ ✓
 - Visualize the pattern for other centuries (20th, 22nd, etc.)
 - Educational content about calendar mathematics
 - Compare with other calendar patterns/phenomena
+- Email reminders for upcoming Phantom dates
+- Visitor counter
+- Visual representation of the 336-22-7 breakdown
