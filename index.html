@@ -130,6 +130,43 @@
         .share-btn.copied {
             background-color: #2e8b57;
         }
+        .checkin-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #483d8b;
+        }
+        .checkin-btn {
+            background-color: transparent;
+            border: 2px solid #483d8b;
+            color: #9370db;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: Georgia, serif;
+            font-size: 0.85em;
+            transition: all 0.2s;
+        }
+        .checkin-btn:hover {
+            border-color: #9370db;
+            background-color: rgba(147, 112, 219, 0.1);
+        }
+        .checkin-btn.checked {
+            background-color: #2e8b57;
+            border-color: #2e8b57;
+            color: #fff;
+        }
+        .checkin-btn.checked:hover {
+            background-color: #3da06a;
+            border-color: #3da06a;
+        }
+        .checkin-stats {
+            margin-top: 10px;
+            font-size: 0.8em;
+            color: #888;
+        }
+        .checkin-stats strong {
+            color: #9370db;
+        }
         .keyboard-hint {
             font-size: 0.7em;
             color: #666;
@@ -176,6 +213,10 @@
             <button class="share-btn" id="share-fb" onclick="shareToFacebook()">Share on Facebook</button>
             <button class="share-btn" id="share-copy" onclick="copyLink()">Copy Link</button>
             <button class="share-btn" onclick="downloadIcs()">Download .ics</button>
+        </div>
+        <div class="checkin-section">
+            <button class="checkin-btn" id="checkin-btn" onclick="toggleCheckin()">I was there!</button>
+            <div class="checkin-stats" id="checkin-stats"></div>
         </div>
         <div class="keyboard-hint">Tip: Use arrow keys to navigate</div>
     </div>
@@ -379,6 +420,9 @@
                 nextBtn.disabled = true;
                 nextLabel.textContent = '---';
             }
+
+            // Update check-in button
+            updateCheckinDisplay();
         }
 
         function navigate(direction) {
@@ -456,6 +500,64 @@ END:VCALENDAR`;
             a.download = `phantom-day-${dayNum}.ics`;
             a.click();
             URL.revokeObjectURL(url);
+        }
+
+        // Check-in functions
+        function getCheckins() {
+            const stored = localStorage.getItem('phantomCheckins');
+            return stored ? JSON.parse(stored) : [];
+        }
+
+        function saveCheckins(checkins) {
+            localStorage.setItem('phantomCheckins', JSON.stringify(checkins));
+        }
+
+        function getDateKey(date) {
+            return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+        }
+
+        function isCheckedIn(index) {
+            const checkins = getCheckins();
+            const key = getDateKey(phantomDates[index]);
+            return checkins.includes(key);
+        }
+
+        function toggleCheckin() {
+            const checkins = getCheckins();
+            const key = getDateKey(phantomDates[currentIndex]);
+            const index = checkins.indexOf(key);
+
+            if (index === -1) {
+                checkins.push(key);
+            } else {
+                checkins.splice(index, 1);
+            }
+
+            saveCheckins(checkins);
+            updateCheckinDisplay();
+        }
+
+        function updateCheckinDisplay() {
+            const btn = document.getElementById('checkin-btn');
+            const stats = document.getElementById('checkin-stats');
+            const checkins = getCheckins();
+            const checked = isCheckedIn(currentIndex);
+
+            // Update button
+            if (checked) {
+                btn.textContent = 'I was there! ✓';
+                btn.classList.add('checked');
+            } else {
+                btn.textContent = 'I was there!';
+                btn.classList.remove('checked');
+            }
+
+            // Update stats
+            if (checkins.length > 0) {
+                stats.innerHTML = `You've witnessed <strong>${checkins.length}</strong> of 365 Phantom dates`;
+            } else {
+                stats.textContent = '';
+            }
         }
 
         // Keyboard navigation
