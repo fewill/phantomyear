@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phantom Year Calendar</title>
+    <style>
+        body {
+            font-family: Georgia, serif;
+            font-size: 20px;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        h1 {
+            color: #9370db;
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 0.3em;
+        }
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 2em;
+        }
+        .back-link {
+            display: inline-block;
+            color: #9370db;
+            text-decoration: none;
+            margin-bottom: 1.5em;
+        }
+        .back-link:hover {
+            color: #ba55d3;
+        }
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 2em;
+            margin-bottom: 1.5em;
+            font-size: 0.85em;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .legend-dot.past {
+            background-color: #555;
+        }
+        .legend-dot.future {
+            background-color: #9370db;
+        }
+        .legend-dot.today {
+            background-color: #ffd700;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5em;
+        }
+        .year-card {
+            background-color: #2d2d2d;
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid #483d8b;
+        }
+        .year-header {
+            color: #ba55d3;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #483d8b;
+        }
+        .dates-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+        }
+        .date-cell {
+            text-align: center;
+            padding: 6px 4px;
+            border-radius: 4px;
+            font-size: 0.75em;
+        }
+        .date-cell.past {
+            background-color: #3a3a3a;
+            color: #888;
+        }
+        .date-cell.future {
+            background-color: #483d8b;
+            color: #e0e0e0;
+        }
+        .date-cell.today {
+            background-color: #ffd700;
+            color: #1a1a1a;
+            font-weight: bold;
+        }
+        .date-num {
+            font-size: 0.85em;
+            font-weight: bold;
+            color: #999;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .date-cell.future .date-num {
+            color: #ba55d3;
+        }
+        .date-cell.today .date-num {
+            color: #1a1a1a;
+        }
+        .stats {
+            text-align: center;
+            margin: 2em 0;
+            padding: 15px;
+            background-color: #2d2d2d;
+            border-radius: 8px;
+            border: 1px solid #483d8b;
+        }
+        .stats-number {
+            font-size: 1.5em;
+            color: #ba55d3;
+            font-weight: bold;
+        }
+        footer {
+            margin-top: 3em;
+            padding-top: 2em;
+            border-top: 1px solid #483d8b;
+            text-align: center;
+            color: #888;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-link">&larr; Back to The Phantom Year</a>
+
+    <h1>Phantom Year Calendar</h1>
+    <p class="subtitle">All 365 days of the hidden year, numbered in sequence</p>
+
+    <div class="legend">
+        <div class="legend-item">
+            <span class="legend-dot past"></span>
+            <span>Past</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-dot today"></span>
+            <span>Today</span>
+        </div>
+        <div class="legend-item">
+            <span class="legend-dot future"></span>
+            <span>Future</span>
+        </div>
+    </div>
+
+    <div class="stats" id="stats">
+        Loading...
+    </div>
+
+    <div class="calendar-grid" id="calendar-grid">
+    </div>
+
+    <footer>
+        <p>&copy; 2026 BMW Partners LLC. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                           'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+        function generatePhantomDates() {
+            const dates = [];
+            for (let year = 2001; year <= 2031; year++) {
+                const yy = year - 2000;
+                for (let month = 0; month < 12; month++) {
+                    if (yy <= monthDays[month]) {
+                        dates.push(new Date(year, month, yy));
+                    }
+                }
+            }
+            return dates;
+        }
+
+        function formatDate(date) {
+            return `${monthNames[date.getMonth()]} ${date.getDate()}`;
+        }
+
+        function getDateStatus(date) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const target = new Date(date);
+            target.setHours(0, 0, 0, 0);
+
+            if (target.getTime() === today.getTime()) return 'today';
+            if (target < today) return 'past';
+            return 'future';
+        }
+
+        function renderCalendar() {
+            const phantomDates = generatePhantomDates();
+            const grid = document.getElementById('calendar-grid');
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            // Count stats
+            let pastCount = 0;
+            let futureCount = 0;
+            let todayIs = false;
+
+            phantomDates.forEach(date => {
+                const status = getDateStatus(date);
+                if (status === 'past') pastCount++;
+                else if (status === 'future') futureCount++;
+                else todayIs = true;
+            });
+
+            // Update stats
+            const statsEl = document.getElementById('stats');
+            statsEl.innerHTML = `
+                <span class="stats-number">${pastCount}</span> days elapsed &nbsp;&bull;&nbsp;
+                <span class="stats-number">${futureCount + (todayIs ? 1 : 0)}</span> days remaining
+            `;
+
+            // Group by year
+            const byYear = {};
+            let dayNum = 1;
+
+            phantomDates.forEach(date => {
+                const year = date.getFullYear();
+                if (!byYear[year]) byYear[year] = [];
+                byYear[year].push({ date, dayNum: dayNum++ });
+            });
+
+            // Render each year
+            for (let year = 2001; year <= 2031; year++) {
+                const dates = byYear[year];
+                if (!dates) continue;
+
+                const card = document.createElement('div');
+                card.className = 'year-card';
+
+                const header = document.createElement('div');
+                header.className = 'year-header';
+                header.textContent = `${year} (${dates.length} days)`;
+                card.appendChild(header);
+
+                const datesGrid = document.createElement('div');
+                datesGrid.className = 'dates-grid';
+
+                dates.forEach(({ date, dayNum }) => {
+                    const cell = document.createElement('div');
+                    const status = getDateStatus(date);
+                    cell.className = `date-cell ${status}`;
+                    cell.innerHTML = `
+                        <span class="date-num">#${dayNum}</span>
+                        ${formatDate(date)}
+                    `;
+                    cell.title = `Day ${dayNum} of 365: ${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+                    datesGrid.appendChild(cell);
+                });
+
+                card.appendChild(datesGrid);
+                grid.appendChild(card);
+            }
+        }
+
+        renderCalendar();
+    </script>
+</body>
+</html>

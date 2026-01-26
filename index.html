@@ -87,7 +87,22 @@
         .sighting-label {
             font-size: 1.15em;
             color: #b0b0b0;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
+        }
+        .day-number {
+            font-size: 0.9em;
+            color: #9370db;
+            margin-bottom: 10px;
+        }
+        .calendar-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #9370db;
+            text-decoration: none;
+            font-size: 0.85em;
+        }
+        .calendar-link:hover {
+            color: #ba55d3;
         }
         ul {
             margin: 1em 0;
@@ -117,12 +132,14 @@
     
     <div class="next-sighting">
         <div class="sighting-label" id="sighting-label">Next Sighting</div>
+        <div class="day-number" id="day-number">Day 26 of 365</div>
         <div class="sighting-nav">
             <button class="nav-btn" id="prev-btn" onclick="navigate(-1)">&lt; <span id="prev-label">Dec 25</span></button>
             <span class="current-date" id="current-date">January 26, 2026</span>
             <button class="nav-btn" id="next-btn" onclick="navigate(1)"><span id="next-label">Feb 26</span> &gt;</button>
         </div>
         <div class="countdown" id="countdown">3 days away 👻</div>
+        <a href="calendar.html" class="calendar-link">View full calendar &rarr;</a>
     </div>
     
     <h2>What Are These Dates?</h2>
@@ -299,6 +316,9 @@
 
             // Update countdown
             document.getElementById('countdown').textContent = getCountdownText(date);
+
+            // Update day number
+            document.getElementById('day-number').textContent = `Day ${currentIndex + 1} of 365`;
 
             // Update prev button
             const prevBtn = document.getElementById('prev-btn');
