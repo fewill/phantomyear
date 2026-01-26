@@ -213,6 +213,7 @@
             <button class="share-btn" id="share-fb" onclick="shareToFacebook()">Share on Facebook</button>
             <button class="share-btn" id="share-copy" onclick="copyLink()">Copy Link</button>
             <button class="share-btn" onclick="downloadIcs()">Download .ics</button>
+            <button class="share-btn" onclick="downloadAllIcs()">Download All 365</button>
         </div>
         <div class="checkin-section">
             <button class="checkin-btn" id="checkin-btn" onclick="toggleCheckin()">I was there!</button>
@@ -498,6 +499,45 @@ END:VCALENDAR`;
             const a = document.createElement('a');
             a.href = url;
             a.download = `phantom-day-${dayNum}.ics`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Download all 365 Phantom dates as .ics
+        function downloadAllIcs() {
+            const now = new Date();
+            const timestamp = now.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+
+            let events = '';
+            phantomDates.forEach((date, index) => {
+                const dayNum = index + 1;
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                const dateStamp = `${year}${month}${day}`;
+
+                events += `BEGIN:VEVENT
+UID:phantom-day-${dayNum}@phantomyear
+DTSTAMP:${timestamp}
+DTSTART;VALUE=DATE:${dateStamp}
+DTEND;VALUE=DATE:${dateStamp}
+SUMMARY:Phantom Year Day ${dayNum} of 365
+DESCRIPTION:${formatDate(date)} - Day ${dayNum} of 365 in the Phantom Year.
+END:VEVENT
+`;
+            });
+
+            const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Phantom Year//EN
+X-WR-CALNAME:Phantom Year (2001-2031)
+${events}END:VCALENDAR`;
+
+            const blob = new Blob([icsContent], { type: 'text/calendar' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'phantom-year-all-365.ics';
             a.click();
             URL.revokeObjectURL(url);
         }
